@@ -84,7 +84,8 @@ def help_button(update: Update, context: CallbackContext) -> None:
                "/help - Show this help message\n" \
                "/settings - Configure bot settings\n" \
                "/language - Change bot language\n" \
-               "/privacy - View privacy policy"
+               "/privacy - View privacy policy\n" \
+               "/gdpr - Request data deletion"
     
     elif category == "admin":
         text = "Admin Commands:\n\n" \
@@ -139,8 +140,28 @@ def help_button(update: Update, context: CallbackContext) -> None:
                "/unfban - Unban from federation"
     
     elif category == "back":
-        # Return to main help menu
-        return help_command(update, context)
+        # Return to main help menu with keyboard
+        keyboard = [
+            [
+                InlineKeyboardButton("Admin", callback_data="help_admin"),
+                InlineKeyboardButton("Moderation", callback_data="help_moderation")
+            ],
+            [
+                InlineKeyboardButton("Filters", callback_data="help_filters"),
+                InlineKeyboardButton("Notes", callback_data="help_notes")
+            ],
+            [
+                InlineKeyboardButton("Approval", callback_data="help_approval"),
+                InlineKeyboardButton("Federation", callback_data="help_federation")
+            ]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        query.edit_message_text(
+            text="Here's what I can help you with. Select a category:",
+            reply_markup=reply_markup
+        )
+        return
     
     else:
         text = "Unknown category. Please try again."

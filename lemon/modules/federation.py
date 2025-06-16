@@ -431,10 +431,10 @@ async def federation_unban(update: Update, context: CallbackContext) -> None:
 
 # Define handlers
 HANDLERS = [
-    CommandHandler("newfed", new_federation),
-    CommandHandler("joinfed", join_federation, filters=~TgFilters.private),
-    CommandHandler("leavefed", leave_federation, filters=~TgFilters.private),
-    CommandHandler("fedinfo", federation_info),
-    CommandHandler("fban", federation_ban),
-    CommandHandler("unfban", federation_unban)
+    CommandHandler("newfed", lambda update, context: context.dispatcher.run_async(new_federation, update, context)),
+    CommandHandler("joinfed", lambda update, context: context.dispatcher.run_async(join_federation, update, context), filters=~TgFilters.private),
+    CommandHandler("leavefed", lambda update, context: context.dispatcher.run_async(leave_federation, update, context), filters=~TgFilters.private),
+    CommandHandler("fedinfo", lambda update, context: context.dispatcher.run_async(federation_info, update, context)),
+    CommandHandler("fban", lambda update, context: context.dispatcher.run_async(federation_ban, update, context)),
+    CommandHandler("unfban", lambda update, context: context.dispatcher.run_async(federation_unban, update, context))
 ]

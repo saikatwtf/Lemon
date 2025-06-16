@@ -253,7 +253,24 @@ async def set_clean_service(update: Update, context: CallbackContext) -> None:
         await db.update_chat(chat.id, chat_data)
         message.reply_text("Clean service has been disabled.")
     
-    elif context.args[0].lower() == "pin" and len(context.args) > 1:
+    elif context.args[0].lower() == "pin":
+        if len(context.args) < 2:
+            message.reply_text("Please specify on/off for pin silence setting.")
+            return
+            
+        if context.args[1].lower() == "on":
+            chat_data["clean_service"]["pin_silence"] = True
+            await db.update_chat(chat.id, chat_data)
+            message.reply_text("Silent pin notifications enabled. Pin messages will not send notifications.")
+        elif context.args[1].lower() == "off":
+            chat_data["clean_service"]["pin_silence"] = False
+            await db.update_chat(chat.id, chat_data)
+            message.reply_text("Silent pin notifications disabled. Pin messages will send notifications.")
+        else:
+            message.reply_text("Invalid option. Use 'on' or 'off'.")
+    
+    else:
+        message.reply_text("Invalid option. Use 'on', 'off', or 'pin on/off'.") elif context.args[0].lower() == "pin" and len(context.args) > 1:
         if context.args[1].lower() == "on":
             chat_data["clean_service"]["pin_silence"] = True
             await db.update_chat(chat.id, chat_data)
