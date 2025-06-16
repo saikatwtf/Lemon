@@ -1,0 +1,73 @@
+{
+  "name": "Lemon Bot",
+  "description": "A powerful Telegram group management bot",
+  "repository": "https://github.com/saikatwtf/Lemon",
+  "logo": "https://i.imgur.com/TbFgF3N.png",
+  "keywords": ["telegram", "bot", "group", "management", "python"],
+  "env": {
+    "BOT_TOKEN": {
+      "description": "Your Telegram bot token from @BotFather",
+      "required": true
+    },
+    "BOT_USERNAME": {
+      "description": "Your bot's username without @",
+      "required": true
+    },
+    "MONGO_URI": {
+      "description": "MongoDB connection URI",
+      "required": true
+    },
+    "DB_NAME": {
+      "description": "MongoDB database name",
+      "value": "lemon_bot",
+      "required": false
+    },
+    "OWNER_ID": {
+      "description": "Your Telegram user ID",
+      "required": true
+    },
+    "SUDO_USERS": {
+      "description": "Comma-separated list of sudo user IDs",
+      "required": false
+    },
+    "LOG_CHANNEL": {
+      "description": "Channel ID for logging (with -100 prefix)",
+      "required": false
+    },
+    "SUPPORT_CHAT": {
+      "description": "Support chat username without @",
+      "required": false
+    },
+    "DEFAULT_LANGUAGE": {
+      "description": "Default language code (en, bn, etc.)",
+      "value": "en",
+      "required": false
+    },
+    "MAX_WARNS": {
+      "description": "Maximum warnings before ban",
+      "value": "3",
+      "required": false
+    },
+    "CAPTCHA_ENABLED": {
+      "description": "Enable CAPTCHA for new users (True/False)",
+      "value": "True",
+      "required": false
+    },
+    "CAPTCHA_TIMEOUT": {
+      "description": "CAPTCHA timeout in seconds",
+      "value": "300",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  }
+}

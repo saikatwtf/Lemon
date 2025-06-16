@@ -2,6 +2,8 @@
 
 Lemon is a powerful Telegram group management bot designed to help admins manage groups effectively.
 
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/saikatwtf/Lemon)
+
 ## Features
 
 ### 💼 Core Functionality
@@ -20,7 +22,7 @@ Lemon is a powerful Telegram group management bot designed to help admins manage
 
 ### 📁 Federations
 - Link multiple groups to a single banlist
-- Commands: /fban, /funban, /fedinfo, /addfed, /joinfed, /leavefed
+- Commands: /fban, /unfban, /fedinfo, /addfed, /joinfed, /leavefed
 
 ## Setup and Installation
 
