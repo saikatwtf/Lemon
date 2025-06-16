@@ -270,28 +270,7 @@ async def set_clean_service(update: Update, context: CallbackContext) -> None:
             message.reply_text("Invalid option. Use 'on' or 'off'.")
     
     else:
-        message.reply_text("Invalid option. Use 'on', 'off', or 'pin on/off'.") elif context.args[0].lower() == "pin" and len(context.args) > 1:
-        if context.args[1].lower() == "on":
-            chat_data["clean_service"]["pin_silence"] = True
-            await db.update_chat(chat.id, chat_data)
-            message.reply_text("Pin notifications will now be silenced.")
-        
-        elif context.args[1].lower() == "off":
-            chat_data["clean_service"]["pin_silence"] = False
-            await db.update_chat(chat.id, chat_data)
-            message.reply_text("Pin notifications will now be shown.")
-        
-        else:
-            message.reply_text("Invalid option. Use 'on' or 'off'.")
-    
-    else:
-        message.reply_text(
-            "Invalid argument. Use:\n"
-            "/cleanservice on - Enable clean service\n"
-            "/cleanservice off - Disable clean service\n"
-            "/cleanservice pin on - Enable silent pins\n"
-            "/cleanservice pin off - Disable silent pins"
-        )
+        message.reply_text("Invalid option. Use 'on', 'off', or 'pin on/off'.")
 
 # Handle service messages
 async def clean_service_handler(update: Update, context: CallbackContext) -> None:
