@@ -23,7 +23,21 @@ def admin_only(func: Callable) -> Callable:
         chat_id = update.effective_chat.id
         
         # Check if user is a bot admin
-        if user_id in context.bot.sudo_users:
+        from lemon.core.bot import LemonBot
+        bot_instance = context.bot._bot_instance if hasattr(context.bot, '_bot_instance') else None
+        
+        # If the user is in SUDO_USERS environment variable
+        sudo_users = []
+        import os
+        owner_id = os.getenv("OWNER_ID")
+        if owner_id and owner_id.isdigit():
+            sudo_users.append(int(owner_id))
+        
+        sudo_users_env = os.getenv("SUDO_USERS", "")
+        if sudo_users_env:
+            sudo_users.extend([int(user_id) for user_id in sudo_users_env.split(",") if user_id.strip().isdigit()])
+        
+        if user_id in sudo_users:
             return func(update, context, *args, **kwargs)
         
         # Check if user is a chat admin

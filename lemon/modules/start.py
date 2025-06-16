@@ -13,7 +13,7 @@ def start(update: Update, context: CallbackContext) -> None:
     keyboard = [
         [
             InlineKeyboardButton("Commands", callback_data="help_commands"),
-            InlineKeyboardButton("Support", url="https://t.me/lemon_support")
+            InlineKeyboardButton("Support", url="https://t.me/saikatftw")
         ],
         [
             InlineKeyboardButton("Add to Group", url=f"https://t.me/{context.bot.username}?startgroup=true")

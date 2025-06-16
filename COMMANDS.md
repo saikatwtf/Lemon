@@ -7,6 +7,24 @@
 - `/language` - Change bot language
 - `/privacy` - View privacy policy
 
+## Greeting Commands
+- `/setwelcome` - Set welcome message for new members
+- `/setwelcome on/off` - Enable/disable welcome messages
+- `/setwelcome captcha on/off` - Enable/disable CAPTCHA verification
+- `/setwelcome captcha timeout <seconds>` - Set CAPTCHA timeout
+- `/setfarewell` - Set farewell message for members who leave
+- `/setfarewell on/off` - Enable/disable farewell messages
+
+## Cleaning Commands
+- `/purge` - Delete a range of messages (reply to a message to start from)
+- `/del` - Delete a specific message (reply to the message)
+- `/clean` - Clean bot messages or specific message types
+- `/clean bot [limit]` - Clean bot messages
+- `/clean commands [limit]` - Clean command messages
+- `/clean all [limit]` - Clean all messages
+- `/cleanservice on/off` - Enable/disable automatic removal of service messages
+- `/cleanservice pin on/off` - Enable/disable silent pin notifications
+
 ## Admin Commands
 - `/adminlist` - List all admins in the group
 - `/promote` - Promote a user to admin

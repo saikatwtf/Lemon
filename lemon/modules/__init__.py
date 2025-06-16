@@ -8,7 +8,9 @@ from lemon.modules import (
     start,
     warns,
     approval,
-    federation
+    federation,
+    greetings,
+    cleaning
 )
 
 # Collect all handlers
@@ -21,5 +23,7 @@ ALL_HANDLERS = [
     start.HANDLERS,
     warns.HANDLERS,
     approval.HANDLERS,
-    federation.HANDLERS
+    federation.HANDLERS,
+    greetings.HANDLERS,
+    cleaning.HANDLERS
 ]

@@ -35,6 +35,14 @@ class LemonBot:
         self.sudo_users = [int(user_id) for user_id in os.getenv("SUDO_USERS", "").split(",") if user_id]
         if self.owner_id:
             self.sudo_users.append(self.owner_id)
+            
+        # Attach sudo_users to the bot object for access in handlers
+        self.bot.sudo_users = self.sudo_users
+        self.bot._bot_instance = self
+            
+        # Attach sudo_users to the bot object for access in handlers
+        self.bot.sudo_users = self.sudo_users
+        self.bot._bot_instance = self
         
         # Other settings
         self.log_channel = os.getenv("LOG_CHANNEL")
