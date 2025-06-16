@@ -35,10 +35,11 @@ class LemonBot:
         self.sudo_users = [int(user_id) for user_id in os.getenv("SUDO_USERS", "").split(",") if user_id]
         if self.owner_id:
             self.sudo_users.append(self.owner_id)
-            
-        # Store bot instance in context.bot_data instead of attaching to bot object
+        
+        # Store data in bot_data instead of attaching to bot object
         self.dispatcher.bot_data["sudo_users"] = self.sudo_users
         self.dispatcher.bot_data["bot_instance"] = self
+        self.dispatcher.bot_data["log_channel"] = os.getenv("LOG_CHANNEL")
         
         # Other settings
         self.log_channel = os.getenv("LOG_CHANNEL")

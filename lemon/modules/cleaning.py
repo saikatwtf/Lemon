@@ -62,9 +62,10 @@ async def purge(update: Update, context: CallbackContext) -> None:
         )
         
         # Log the action
-        if context.bot.log_channel:
+        log_channel = context.bot_data.get("log_channel")
+        if log_channel:
             context.bot.send_message(
-                chat_id=context.bot.log_channel,
+                chat_id=log_channel,
                 text=f"#PURGE\n"
                      f"Admin: {user.first_name} (ID: {user.id})\n"
                      f"Chat: {chat.title} (ID: {chat.id})\n"
@@ -189,9 +190,10 @@ async def clean(update: Update, context: CallbackContext) -> None:
         )
         
         # Log the action
-        if context.bot.log_channel:
+        log_channel = context.bot_data.get("log_channel")
+        if log_channel:
             context.bot.send_message(
-                chat_id=context.bot.log_channel,
+                chat_id=log_channel,
                 text=f"#CLEAN\n"
                      f"Admin: {user.first_name} (ID: {user.id})\n"
                      f"Chat: {chat.title} (ID: {chat.id})\n"
@@ -261,172 +263,9 @@ async def set_clean_service(update: Update, context: CallbackContext) -> None:
             chat_data["clean_service"]["pin_silence"] = False
             await db.update_chat(chat.id, chat_data)
             message.reply_text("Pin notifications will now be shown.")
-    
-    else:
-        message.reply_text(
-            "Invalid argument. Use:\n"
-            "/cleanservice on - Enable clean service\n"
-            "/cleanservice off - Disable clean service\n"
-            "/cleanservice pin on - Enable silent pins\n"
-            "/cleanservice pin off - Disable silent pins"
-        )
-
-# Handle service messages
-async def clean_service_handler(update: Update, context: CallbackContext) -> None:
-    """Clean service messages if enabled"""
-    chat = update.effective_chat
-    message = update.effective_message
-    
-    # Skip in private chats
-    if chat.type == "private":
-        return
-    
-    # Get chat settings
-    chat_data = await db.get_chat(chat.id) or {}
-    clean_service = chat_data.get("clean_service", {})
-    
-    # Check if clean service is enabled
-    if not clean_service.get("enabled", False):
-        return
-    
-    # Check if it's a service message
-    is_service = (
-        message.new_chat_members or
-        message.left_chat_member or
-        message.new_chat_title or
-        message.new_chat_photo or
-        message.delete_chat_photo or
-        message.group_chat_created or
-        message.supergroup_chat_created or
-        message.channel_chat_created or
-        message.migrate_to_chat_id or
-        message.migrate_from_chat_id or
-        message.pinned_message
-    )
-    
-    # Handle pinned messages separately
-    if message.pinned_message and clean_service.get("pin_silence", False):
-        try:
-            # Delete the service message but keep the pinned message
-            context.bot.delete_message(chat_id=chat.id, message_id=message.message_id)
-        except BadRequest:
-            pass
-        return
-    
-    # Delete service message
-    if is_service:
-        try:
-            context.bot.delete_message(chat_id=chat.id, message_id=message.message_id)
-        except BadRequest:
-            pass
-
-# Helper function to delete messages
-def delete_message(context: CallbackContext, chat_id, message_id):
-    """Delete a message after a delay"""
-    try:
-        context.bot.delete_message(chat_id=chat_id, message_id=message_id)
-    except BadRequest:
-        pass
-
-# Define handlers
-HANDLERS = [
-    CommandHandler("purge", purge, filters=~TgFilters.private),
-    CommandHandler("del", delete_message_cmd, filters=~TgFilters.private),
-    CommandHandler("clean", clean, filters=~TgFilters.private),
-    CommandHandler("cleanservice", set_clean_service, filters=~TgFilters.private),
-    MessageHandler(TgFilters.status_update, clean_service_handler)
-]      if context.args[1].lower() == "on":
-            chat_data["clean_service"]["pin_silence"] = True
-            await db.update_chat(chat.id, chat_data)
-            message.reply_text("Pin notifications will now be silenced.")
         
-        elif context.args[1].lower() == "off":
-            chat_data["clean_service"]["pin_silence"] = False
-            await db.update_chat(chat.id, chat_data)
-            message.reply_text("Pin notifications will now be shown.")
-    
-    else:
-        message.reply_text(
-            "Invalid argument. Use:\n"
-            "/cleanservice on - Enable clean service\n"
-            "/cleanservice off - Disable clean service\n"
-            "/cleanservice pin on - Enable silent pins\n"
-            "/cleanservice pin off - Disable silent pins"
-        )
-
-# Handle service messages
-async def clean_service_handler(update: Update, context: CallbackContext) -> None:
-    """Clean service messages if enabled"""
-    chat = update.effective_chat
-    message = update.effective_message
-    
-    # Skip in private chats
-    if chat.type == "private":
-        return
-    
-    # Get chat settings
-    chat_data = await db.get_chat(chat.id) or {}
-    clean_service = chat_data.get("clean_service", {})
-    
-    # Check if clean service is enabled
-    if not clean_service.get("enabled", False):
-        return
-    
-    # Check if it's a service message
-    is_service = (
-        message.new_chat_members or
-        message.left_chat_member or
-        message.new_chat_title or
-        message.new_chat_photo or
-        message.delete_chat_photo or
-        message.group_chat_created or
-        message.supergroup_chat_created or
-        message.channel_chat_created or
-        message.migrate_to_chat_id or
-        message.migrate_from_chat_id or
-        message.pinned_message
-    )
-    
-    # Handle pinned messages separately
-    if message.pinned_message and clean_service.get("pin_silence", False):
-        try:
-            # Delete the service message but keep the pinned message
-            context.bot.delete_message(chat_id=chat.id, message_id=message.message_id)
-        except BadRequest:
-            pass
-        return
-    
-    # Delete service message
-    if is_service:
-        try:
-            context.bot.delete_message(chat_id=chat.id, message_id=message.message_id)
-        except BadRequest:
-            pass
-
-# Helper function to delete messages
-def delete_message(context: CallbackContext, chat_id, message_id):
-    """Delete a message after a delay"""
-    try:
-        context.bot.delete_message(chat_id=chat_id, message_id=message_id)
-    except BadRequest:
-        pass
-
-# Define handlers
-HANDLERS = [
-    CommandHandler("purge", purge, filters=~TgFilters.private),
-    CommandHandler("del", delete_message_cmd, filters=~TgFilters.private),
-    CommandHandler("clean", clean, filters=~TgFilters.private),
-    CommandHandler("cleanservice", set_clean_service, filters=~TgFilters.private),
-    MessageHandler(TgFilters.status_update, clean_service_handler)
-]      if context.args[1].lower() == "on":
-            chat_data["clean_service"]["pin_silence"] = True
-            await db.update_chat(chat.id, chat_data)
-            message.reply_text("Pin notifications will now be silenced.")
-        
-        elif context.args[1].lower() == "off":
-            chat_data["clean_service"]["pin_silence"] = False
-            await db.update_chat(chat.id, chat_data)
-            message.reply_text("Pin notifications will now be shown.")
+        else:
+            message.reply_text("Invalid option. Use 'on' or 'off'.")
     
     else:
         message.reply_text(
