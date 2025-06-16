@@ -1,4 +1,4 @@
-# Lemon - Telegram Group Management Bot
+# Lemon - Telegram Group Management Bot (Unstable)
 
 Lemon is a powerful Telegram group management bot designed to help admins manage groups effectively.
 
