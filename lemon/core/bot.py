@@ -36,13 +36,9 @@ class LemonBot:
         if self.owner_id:
             self.sudo_users.append(self.owner_id)
             
-        # Attach sudo_users to the bot object for access in handlers
-        self.bot.sudo_users = self.sudo_users
-        self.bot._bot_instance = self
-            
-        # Attach sudo_users to the bot object for access in handlers
-        self.bot.sudo_users = self.sudo_users
-        self.bot._bot_instance = self
+        # Store bot instance in context.bot_data instead of attaching to bot object
+        self.dispatcher.bot_data["sudo_users"] = self.sudo_users
+        self.dispatcher.bot_data["bot_instance"] = self
         
         # Other settings
         self.log_channel = os.getenv("LOG_CHANNEL")
